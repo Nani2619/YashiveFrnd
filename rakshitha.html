@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rakshitha BirthDay</title>
+
   <style>
     body {
       font-family: "Poppins", sans-serif;
@@ -20,6 +21,8 @@
       flex-direction: column;
       text-align: center;
       position: relative;
+      overflow: hidden;
+      transition: 1s ease-in-out;
     }
 
     h1 {
@@ -52,7 +55,6 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      cursor: default;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
       transition: transform 0.3s;
     }
@@ -63,16 +65,15 @@
 
     .countdown div img {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: 1;
-      filter: brightness(0.8); /* darken image so text is readable */
+      filter: brightness(0.8);
     }
 
-    .countdown div span, .countdown div div {
+    .countdown div span,
+    .countdown div div {
       position: relative;
       z-index: 2;
     }
@@ -84,7 +85,6 @@
 
     .countdown div span {
       font-size: 1rem;
-      color: #fff;
     }
 
     footer {
@@ -101,30 +101,43 @@
       background: rgba(0, 0, 0, 0.4);
       z-index: -1;
     }
+
+    /* Birthday Message Style */
+    .birthday-message {
+      font-size: 3rem;
+      text-shadow: 0 0 20px gold, 0 0 40px orange;
+      animation: zoomIn 2s ease forwards;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
+
 <body>
 
-  <h1><b>Happy Birthday Rakshitha🎉</b></h1>
+  <h1>Happy Birthday Rakshitha 🎉</h1>
 
   <div class="countdown">
-    <div id="days-box">
-      <img src="r6.jpg" alt="Days Image">
+    <div>
+      <img src="r6.jpg">
       <div id="days">00</div>
       <span>Days</span>
     </div>
-    <div id="hours-box">
-      <img src="r5.jpg" alt="Hours Image">
+    <div>
+      <img src="r5.jpg">
       <div id="hours">00</div>
       <span>Hours</span>
     </div>
-    <div id="minutes-box">
-      <img src="r7.jpg" alt="Minutes Image">
+    <div>
+      <img src="r7.jpg">
       <div id="minutes">00</div>
       <span>Minutes</span>
     </div>
-    <div id="seconds-box">
-      <img src="r3.jpg" alt="Seconds Image">
+    <div>
+      <img src="r3.jpg">
       <div id="seconds">00</div>
       <span>Seconds</span>
     </div>
@@ -133,12 +146,35 @@
   <footer><h2>Made by Yashive...</h2></footer>
 
   <script>
-    // Countdown Logic
-    const targetDate = new Date("March 03, 2026 00:00:00").getTime();
+    const targetDate = new Date("March 04, 2026 00:00:00").getTime();
 
     const countdown = () => {
       const now = new Date().getTime();
       const difference = targetDate - now;
+
+      if (difference <= 0) {
+        clearInterval(timer);
+
+        // Hide countdown elements
+        document.querySelector("h1").style.display = "none";
+        document.querySelector(".countdown").style.display = "none";
+        document.querySelector("footer").style.display = "none";
+
+        // Change whole background to birthday image
+        document.body.style.backgroundImage = "url('r2.jpg')";
+
+        // Remove dark overlay
+        document.body.style.setProperty("--overlay", "transparent");
+        document.body.style.backgroundColor = "black";
+
+        // Create Birthday Message
+        const message = document.createElement("div");
+        message.classList.add("birthday-message");
+        message.innerHTML = "🎂 Happy Birthday Rakshitha 🎉";
+        document.body.appendChild(message);
+
+        return;
+      }
 
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -149,15 +185,11 @@
       document.getElementById("hours").innerText = hours.toString().padStart(2, "0");
       document.getElementById("minutes").innerText = minutes.toString().padStart(2, "0");
       document.getElementById("seconds").innerText = seconds.toString().padStart(2, "0");
-
-      if (difference < 0) {
-        clearInterval(timer);
-        document.querySelector(".countdown").innerHTML = "<h2>🎊 Countdown Complete! 🎊</h2>";
-      }
     };
 
     const timer = setInterval(countdown, 1000);
     countdown();
   </script>
+
 </body>
 </html>
